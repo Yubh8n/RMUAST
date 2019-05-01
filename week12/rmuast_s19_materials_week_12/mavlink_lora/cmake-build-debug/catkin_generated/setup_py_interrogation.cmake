@@ -1,0 +1,6 @@
+set(mavlink_lora_SETUP_PY_VERSION "1.0.0")
+set(mavlink_lora_SETUP_PY_SCRIPTS "scripts/gcs_simple.py;scripts/gcs_keypress.py;scripts/param_list_get.py;scripts/mission_download.py;scripts/mission_set_current.py;scripts/req_data_stream.py")
+set(mavlink_lora_SETUP_PY_PACKAGES "")
+set(mavlink_lora_SETUP_PY_PACKAGE_DIRS "")
+set(mavlink_lora_SETUP_PY_MODULES "")
+set(mavlink_lora_SETUP_PY_MODULE_DIRS "")

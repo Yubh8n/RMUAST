@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/crow/Documents/mavlink_lora/ros/mavlink_lora/cmake-build-debug/devel/setup.sh

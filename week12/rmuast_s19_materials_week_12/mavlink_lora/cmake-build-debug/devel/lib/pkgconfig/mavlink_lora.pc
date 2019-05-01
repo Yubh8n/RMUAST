@@ -1,0 +1,8 @@
+prefix=/home/crow/Documents/mavlink_lora/ros/mavlink_lora/cmake-build-debug/devel
+
+Name: mavlink_lora
+Description: Description of mavlink_lora
+Version: 1.0.0
+Cflags: -I/home/crow/Documents/mavlink_lora/ros/mavlink_lora/cmake-build-debug/devel/include
+Libs: -L/home/crow/Documents/mavlink_lora/ros/mavlink_lora/cmake-build-debug/devel/lib 
+Requires: roscpp std_msgs message_runtime

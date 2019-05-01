@@ -72,11 +72,14 @@ else:
 
 A = np.array(EM)
 
-for i in range(1, len(EM)):
-    pass
-    #print euclidean_distance(EM[i][0],EM[i][1],EM[i-1][0],EM[i][1])
+file = open('track_UTM.txt','w')
 
-plt.scatter(A[:,0], A[:,1])
-plt.legend()
-plt.gca().set_aspect('equal')
-plt.show()
+for element in A:
+    file.write(str(element[0])+ ","+ str(element[1]) + "\n")
+file.close()
+
+
+#plt.scatter(A[:,0], A[:,1])
+#plt.legend()
+#plt.gca().set_aspect('equal')
+#plt.show()
