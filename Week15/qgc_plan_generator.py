@@ -34,6 +34,8 @@ Changed by Chris Mikkelsen
 
 import json
 from pathlib import Path
+import sys
+
 def import_file(filename):
     a = []
     inp = open(filename, "r")
@@ -49,11 +51,15 @@ def import_file(filename):
         long.append(float(a[i+1]))
 
     return lat, long
-filepath = "gps.txt"
 
-my_file = Path(filepath)
+if len(sys.argv) < 2:
+    print "NOT ENOUGH ARGUMENTS TO SCRIPT, list is: ./removeOutliers.py <inputfile> <outputfile>"
+    print "exitting"
+    exit()
+
+my_file = Path(str(sys.argv[1]))
 if my_file.is_file():
-    print "Importing gps.txt and generating mission.plan\n"
+    print "Importing "+ sys.argv[1] + " and generating mission.plan\n"
     plan = {}
     geoFence = {}
     plan['fileType'] = 'Plan'
@@ -65,7 +71,7 @@ if my_file.is_file():
     plan['groundStation'] = 'QGroundControl'
     items = []
 
-    lat, long = import_file(filepath)
+    lat, long = import_file(sys.argv[1])
 
     item = {}
     item['autoContinue'] = True

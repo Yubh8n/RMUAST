@@ -40,6 +40,7 @@ from math import sqrt
 import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
+import sys
 
 def import_file(filename):
     a = []
@@ -60,7 +61,7 @@ def import_file(filename):
 def euclidean_distance(e1,n1,e2,n2):
     return sqrt((e1-e2)**2+(n1-n2)**2)
 
-filepath = "gps.txt"
+filepath = sys.argv[1]
 
 my_file = Path(filepath)
 if my_file.is_file():
@@ -75,6 +76,7 @@ if my_file.is_file():
         EM = []
         for i in range(0,len(long)):
             (hemisphere, zone, letter, e, n) = uc.geodetic_to_utm (lat[i],long[i])
+            print letter
             EM.append([e, n])
 
     A = np.array(EM)
@@ -86,9 +88,9 @@ if my_file.is_file():
     file.close()
 
 
-    #plt.scatter(A[:,0], A[:,1])
-    #plt.legend()
-    #plt.gca().set_aspect('equal')
+    plt.scatter(A[:,0], A[:,1])
+    plt.legend()
+    plt.gca().set_aspect('equal')
     #plt.show()
 else:
     print "Error importing gps.txt \n Please make sure you have the correct file!"

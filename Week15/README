@@ -1,0 +1,28 @@
+remember to chmod +x on Week15_code.py, qgc_plan_generator.py, removeOutliers.py
+#############
+Week15_code.py takes 1 argument (the list of gps coordinates, which should be given
+in the following way:
+
+55.36714,10.42851
+55.36716,10.42850
+55.36716,10.42850
+55.36719,10.42848
+55.36719,10.42848
+############
+
+removeOutliers.py takes in one argument the output of Week15_code.py (called track_UTM.txt) OR
+any other UTM track, just given in the following way:
+(works only for N and 32 coordinates.)
+
+590540.088384708,6136576.402976075
+590539.4089597287,6136578.61544249
+590539.4089597287,6136578.61544249
+590538.072943112,6136581.927640441
+590538.072943112,6136581.927640441
+590538.072943112,6136581.927640441
+
+############
+
+qgc_plan_generator.py takes in 1 argument, the output of removeOutliers.py OR a gps coordinate system.
+given in geodetric coordinates
+############
