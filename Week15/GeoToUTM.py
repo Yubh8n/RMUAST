@@ -91,7 +91,7 @@ if my_file.is_file():
     plt.scatter(A[:,0], A[:,1])
     plt.legend()
     plt.gca().set_aspect('equal')
-    #plt.show()
+    plt.show()
 else:
     print "Error importing gps.txt \n Please make sure you have the correct file!"
 
