@@ -34,13 +34,12 @@ Revision
 2015-03-09 KJ Minor update of the license text.
 2016-01-16 KJ Corrected a minor problem with the library location reference.
 """
-
-from utm import utmconv
 from math import sqrt
 import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
 import sys
+from utm import utmconv
 
 def import_file(filename):
     a = []
@@ -76,7 +75,6 @@ if my_file.is_file():
         EM = []
         for i in range(0,len(long)):
             (hemisphere, zone, letter, e, n) = uc.geodetic_to_utm (lat[i],long[i])
-            print letter
             EM.append([e, n])
 
     A = np.array(EM)
