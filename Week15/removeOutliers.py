@@ -1,5 +1,6 @@
 #!/usr/bin/python
-
+from pathlib import Path
+UTM_track = "track_UTM.txt"
 def import_file(filename):
     a = []
     inp = open(filename, "r")
@@ -16,4 +17,11 @@ def import_file(filename):
 
     return n, e
 
-n,e = import_file("track_UTM.txt")
+
+my_file = Path(UTM_track)
+if my_file.is_file():
+    print "Importing " + str(UTM_track)
+    n, e = import_file(UTM_track)
+
+else:
+    print "Error importing track_UTM.txt \n Please run Week15_code.py first."

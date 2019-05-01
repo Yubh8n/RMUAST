@@ -32,6 +32,8 @@
 Changed by Chris Mikkelsen
 '''
 
+import json
+from pathlib import Path
 def import_file(filename):
     a = []
     inp = open(filename, "r")
@@ -47,62 +49,67 @@ def import_file(filename):
         long.append(float(a[i+1]))
 
     return lat, long
-import json
+filepath = "gps.txt"
 
+my_file = Path(filepath)
+if my_file.is_file():
+    print "Importing gps.txt and generating mission.plan\n"
+    plan = {}
+    geoFence = {}
+    plan['fileType'] = 'Plan'
 
-plan = {}
-geoFence = {}
-plan['fileType'] = 'Plan'
+    geoFence['polygon'] = []
+    geoFence['version'] = 1
+    plan['geoFence'] = geoFence
 
-geoFence['polygon'] = []
-geoFence['version'] = 1
-plan['geoFence'] = geoFence
+    plan['groundStation'] = 'QGroundControl'
+    items = []
 
-plan['groundStation'] = 'QGroundControl'
-items = []
+    lat, long = import_file(filepath)
 
-lat, long = import_file("gps.txt")
-
-item = {}
-item['autoContinue'] = True
-item['command'] = 22
-item['doJumpId'] = 1
-item['frame'] = 3
-item['params'] = [0,0,0,0,lat[0],[long],50]
-item['type'] = 'SimpleItem'
-items.append (item)
-
-for i in range(1, len(lat)-1):
     item = {}
     item['autoContinue'] = True
-    item['command'] = 16
-    item['doJumpId'] = i+1
+    item['command'] = 22
+    item['doJumpId'] = 1
     item['frame'] = 3
-    item['params'] = [0,0,0,0,lat[i],long[i],50]
+    item['params'] = [0,0,0,0,lat[0],[long],50]
     item['type'] = 'SimpleItem'
     items.append (item)
 
+    for i in range(1, len(lat)-1):
+        item = {}
+        item['autoContinue'] = True
+        item['command'] = 16
+        item['doJumpId'] = i+1
+        item['frame'] = 3
+        item['params'] = [0,0,0,0,lat[i],long[i],50]
+        item['type'] = 'SimpleItem'
+        items.append (item)
 
-mission = {}
-mission['cruiseSpeed'] = 15
-mission['firmwareType'] = 3
-mission['hoverSpeed'] = 5
-mission['items'] = items
-mission['plannedHomePosition'] = [lat[0], long[0], 50]
-mission['vehicleType'] = 2
-mission['version'] = 2
-plan['mission'] = mission
+
+    mission = {}
+    mission['cruiseSpeed'] = 15
+    mission['firmwareType'] = 3
+    mission['hoverSpeed'] = 5
+    mission['items'] = items
+    mission['plannedHomePosition'] = [lat[0], long[0], 50]
+    mission['vehicleType'] = 2
+    mission['version'] = 2
+    plan['mission'] = mission
 
 
-rallyPoints = {}
-rallyPoints['points'] = []
-rallyPoints['version'] = 1
-plan['rallyPoints'] = rallyPoints
+    rallyPoints = {}
+    rallyPoints['points'] = []
+    rallyPoints['version'] = 1
+    plan['rallyPoints'] = rallyPoints
 
-plan['version'] = 1
+    plan['version'] = 1
 
-plan_json = json.dumps(plan, indent=4, sort_keys=True)
+    plan_json = json.dumps(plan, indent=4, sort_keys=True)
 
-file = open('mission.plan','w')
-file.write (plan_json)
-file.close()
+    file = open('mission.plan','w')
+    file.write (plan_json)
+    file.close()
+    print "mission.plan generated successfully!"
+else:
+    print "Error importing gps.txt \n Please make sure you have the correct file!"

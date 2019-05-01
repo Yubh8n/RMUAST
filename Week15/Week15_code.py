@@ -39,6 +39,7 @@ from utm import utmconv
 from math import sqrt
 import matplotlib.pyplot as plt
 import numpy as np
+from pathlib import Path
 
 def import_file(filename):
     a = []
@@ -59,27 +60,36 @@ def import_file(filename):
 def euclidean_distance(e1,n1,e2,n2):
     return sqrt((e1-e2)**2+(n1-n2)**2)
 
-lat, long = import_file("gps.txt")
+filepath = "gps.txt"
 
-uc = utmconv()
-if len(lat) != len(long):
-    print("Error!")
+my_file = Path(filepath)
+if my_file.is_file():
+    print "Importing gps.txt and generating track_UTM.txt\n"
+
+    lat, long = import_file("gps.txt")
+
+    uc = utmconv()
+    if len(lat) != len(long):
+        print("Error!")
+    else:
+        EM = []
+        for i in range(0,len(long)):
+            (hemisphere, zone, letter, e, n) = uc.geodetic_to_utm (lat[i],long[i])
+            EM.append([e, n])
+
+    A = np.array(EM)
+
+    file = open('track_UTM.txt','w')
+
+    for element in A:
+        file.write(str(element[0])+ ","+ str(element[1]) + "\n")
+    file.close()
+
+
+    #plt.scatter(A[:,0], A[:,1])
+    #plt.legend()
+    #plt.gca().set_aspect('equal')
+    #plt.show()
 else:
-    EM = []
-    for i in range(0,len(long)):
-        (hemisphere, zone, letter, e, n) = uc.geodetic_to_utm (lat[i],long[i])
-        EM.append([e, n])
+    print "Error importing gps.txt \n Please make sure you have the correct file!"
 
-A = np.array(EM)
-
-file = open('track_UTM.txt','w')
-
-for element in A:
-    file.write(str(element[0])+ ","+ str(element[1]) + "\n")
-file.close()
-
-
-#plt.scatter(A[:,0], A[:,1])
-#plt.legend()
-#plt.gca().set_aspect('equal')
-#plt.show()
