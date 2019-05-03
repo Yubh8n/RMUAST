@@ -46,7 +46,7 @@ def import_file(filename):
 
     lat = []
     long = []
-    for i in range(0, len(a),2):
+    for i in range(0, len(a),3):
         lat.append(float(a[i]))
         long.append(float(a[i+1]))
 

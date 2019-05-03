@@ -45,17 +45,22 @@ def import_file(filename):
     a = []
     inp = open(filename, "r")
     for line in inp.readlines():
+        #print line
         for i in line.split():
+            #print i
             for l in i.split(","):
                 a.append(l)
+                #print l
 
     lat = []
     long = []
-    for i in range(0, len(a),2):
+    time = []
+    for i in range(0, len(a), 3):
         lat.append(float(a[i]))
         long.append(float(a[i+1]))
+        time.append(float(a[i+2]))
 
-    return lat, long
+    return lat, long, time
 
 def euclidean_distance(e1,n1,e2,n2):
     return sqrt((e1-e2)**2+(n1-n2)**2)
@@ -66,7 +71,7 @@ my_file = Path(filepath)
 if my_file.is_file():
     print "Importing gps.txt and generating track_UTM.txt\n"
 
-    lat, long = import_file("gps.txt")
+    lat, long, time = import_file(filepath)
 
     uc = utmconv()
     if len(lat) != len(long):
@@ -75,14 +80,14 @@ if my_file.is_file():
         EM = []
         for i in range(0,len(long)):
             (hemisphere, zone, letter, e, n) = uc.geodetic_to_utm (lat[i],long[i])
-            EM.append([e, n])
+            EM.append([e, n, time])
 
     A = np.array(EM)
 
     file = open('track_UTM.txt','w')
 
     for element in A:
-        file.write(str(element[0])+ ","+ str(element[1]) + "\n")
+        file.write(str(element[0])+ ","+ str(element[1]) + "," + str(element[2]) + "\n")
     file.close()
 
 
