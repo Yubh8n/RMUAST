@@ -57,7 +57,7 @@ class pos_node:
         self.lon = 0.0
         self.alt = 0.0
         self.gps_array = []
-        self.f = open("/home/chris/gps.txt", "w")
+        self.f = open("test_with_time.txt", "w")
 
         # launch node
         rospy.init_node('mavlink_lora_pos_simple', disable_signals=True)
@@ -99,7 +99,7 @@ class pos_node:
         print('Position:           {0}'.format(pos_text))
         print('Altitude:           {0}'.format(alt_text))
         print('\n')
-        self.f.write(pos_text + "\n")
+        self.f.write(pos_text + "," + str(now) + "\n")
 
     def on_mavlink_msg(self, msg):
         # save timestamp of last package of anything received from the drone

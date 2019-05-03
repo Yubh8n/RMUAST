@@ -51,8 +51,8 @@ if my_file.is_file():
 
         #----------For debugging purposes-------------#
         #print outliers
-        #print np.size(outliers)
-        #print np.size(distances)
+        print "Before outliers removed: " + str(np.size(distances))
+        print "After outliers removed: " + str(np.size(true_path)/2)
         #---------------------------------------------#
 
         file = open("filtered.txt", 'w')
