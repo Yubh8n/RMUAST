@@ -45,12 +45,9 @@ def import_file(filename):
     a = []
     inp = open(filename, "r")
     for line in inp.readlines():
-        #print line
         for i in line.split():
-            #print i
             for l in i.split(","):
                 a.append(l)
-                #print l
 
     lat = []
     long = []
@@ -64,6 +61,19 @@ def import_file(filename):
 
 def euclidean_distance(e1,n1,e2,n2):
     return sqrt((e1-e2)**2+(n1-n2)**2)
+
+def checkForDups(e, n, time):
+    nondup = []
+    if len(e) == len(n):
+        for i in range(0, len(e)-1):
+            dist = euclidean_distance(e[i], n[i], e[i-1], n[i-1])
+            if dist > 0:
+                nondup.append([e[i], n[i], time[i]])
+    else:
+        print("Error, length of lat and long arrays doesn't match")
+        exit()
+    return nondup
+
 
 filepath = sys.argv[1]
 
@@ -80,9 +90,11 @@ if my_file.is_file():
         EM = []
         for i in range(0,len(long)):
             (hemisphere, zone, letter, e, n) = uc.geodetic_to_utm (lat[i],long[i])
-            EM.append([e, n, time])
+            EM.append([e, n, time[i]])
 
     A = np.array(EM)
+    A = checkForDups(A[:,0], A[:,1], A[:,2])
+    A = np.array(A)
 
     file = open('track_UTM.txt','w')
 
@@ -90,8 +102,10 @@ if my_file.is_file():
         file.write(str(element[0])+ ","+ str(element[1]) + "," + str(element[2]) + "\n")
     file.close()
 
-
-    plt.scatter(A[:,0], A[:,1])
+    print("length of non filtered", np.size(EM)/3)
+    print("Length of filtered: ", np.size(A)/3)
+    EM = np.array(EM)
+    plt.scatter(EM[:,0], EM[:,1])
     plt.legend()
     plt.gca().set_aspect('equal')
     plt.show()

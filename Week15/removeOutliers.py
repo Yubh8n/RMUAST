@@ -10,7 +10,7 @@ if len(sys.argv) < 2:
     exit()
 
 UTM_track = sys.argv[1]
-mPerSec = 5*1000/(60*60) #m/s = km/h*1000/(60*60)
+mPerSec = 5.*1000/(60*60) #m/s = km/h*1000/(60*60)
 
 def import_file(filename):
     a = []
@@ -22,18 +22,19 @@ def import_file(filename):
 
     n = []
     e = []
-    for i in range(0, len(a),2):
+    time = []
+    for i in range(0, len(a),3):
         n.append(float(a[i]))
         e.append(float(a[i+1]))
-
-    return n, e
+        time.append(float(a[i+2]))
+    return n, e, time
 def euclidean_distance(e1,n1,e2,n2):
     return sqrt((e1-e2)**2+(n1-n2)**2)
 
 my_file = Path(UTM_track)
 if my_file.is_file():
     print "Importing " + str(UTM_track)
-    n, e = import_file(UTM_track)
+    n, e, time = import_file(UTM_track)
     distances = []
     outliers = []
     true_path = []
@@ -42,9 +43,10 @@ if my_file.is_file():
         uc = utmconv()
         for i in range(1, len(n)):
             dist = euclidean_distance(e[i], n[i], e[i-1], n[i-1])
-            if dist > mPerSec:
-                outliers.append([e[i],n[i]])
-            else:
+            diff = time[i]-time[i-1]
+            if dist < float(mPerSec*diff):
+                print "Threshold: " + str(float(mPerSec*diff))
+                print "distance: " + str(dist)
                 lat, long = uc.utm_to_geodetic("N", 32, n[i], e[i])
                 true_path.append([lat, long])
             distances.append(dist)
